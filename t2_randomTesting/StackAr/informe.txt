@@ -1,0 +1,18 @@
+-- Ejercicio 1:
+513 tests en total, no hay failing tests
+
+
+-- Ejercicio 2:
+a. Cubrio 46 de 53 lineas
+b. Cubrio 25 de 26 branches
+
+-- Ejercicio 3:
+a. Fallan 208 tests
+
+-- Ejercio 5:
+a. Creo 49 mutantes. Mutation score: 30/49
+b. Mejor mutation score: 44/49.
+Mutantes equivalentes:
+    - Uno en el hashCode, donde cambia en la linea 65 la multiplicacion por la division, dicho mutante no muere porque siempre divide sobre 1, que da el mismo resultado.
+    - Hay 3 sin cobertura dado que no se puede cambiar el estado interno del stack para afectar el repOk y ya estamos garantizando que se construye un stack valido. Lineas: 58, 61 y 65 del codigo reparado
+    - El mutante equivalente restante es un cambio en una condicion booleana de la linea 60 que no se logra ejecutar ya que no podemos generar un test que modifique la estructura interna del Stack en torno a readIndex y elems.length para construir un Stack invalido.

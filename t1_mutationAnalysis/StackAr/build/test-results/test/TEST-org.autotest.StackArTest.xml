@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.autotest.StackArTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2023-03-27T21:15:05" hostname="pgarret-ltmwawy.internal.salesforce.com" time="0.037">
+  <properties/>
+  <testcase name="testExample()" classname="org.autotest.StackArTest" time="0.015"/>
+  <testcase name="toStringOfStackWithMoreThanOneElementIsNotEmpty()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="hashCodeWithOneElement()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="stackIsNotEqualToNull()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="negativeCapacityThrowsException()" classname="org.autotest.StackArTest" time="0.002"/>
+  <testcase name="toStringOfEmptyStackIsEmpty()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="newStackWithCapacityIsEmpty()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="pushToStackIsDifferentToOtherStack()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="emptyStacksAreEqual()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="popReturnsLastElement()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="toStringOfStackWithContentIsNotEmpty()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="topShowsLastElement()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="stacksIsEqualToItself()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="topOfEmptyStackThrowsException()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="isEmptyWhenNew()" classname="org.autotest.StackArTest" time="0.001"/>
+  <testcase name="hashCodeWithSeveralElements()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="pushAndPopLeavesStackEmpty()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="hashCodeWithNumberAndNull()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="pushToFullStackThrowsException()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="popToEmptyStackThrowsException()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="stackIsNotEqualToObject()" classname="org.autotest.StackArTest" time="0.0"/>
+  <testcase name="readIndexIsDifferentWhenOneStackIsEmptyAndTheOtherOneNot()" classname="org.autotest.StackArTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
