@@ -11,11 +11,11 @@ class TestGetFitnessCgiDecode(unittest.TestCase):
 
     def testAA(self):
         fitness = get_fitness_cgi_decode(["%AA"])
-        self.assertEqual(fitness, 2.857142857142857)
+        self.assertEqual(fitness, 2.357142857142857)
 
     def testAU(self):
         fitness = get_fitness_cgi_decode(["%AU"])
-        self.assertEqual(fitness, 3.607142857142857)
+        self.assertEqual(fitness, 3.53021978021978)
 
     def testUU(self):
         fitness = get_fitness_cgi_decode(["%UU"])
@@ -47,7 +47,7 @@ class TestGetFitnessCgiDecode(unittest.TestCase):
 
     def testPercentage1Plus(self):
         fitness = get_fitness_cgi_decode(["%1+"])
-        self.assertEqual(fitness, 3.607142857142857)
+        self.assertEqual(fitness, 3.4404761904761907)
 
     def testTwoStrings(self):
         fitness = get_fitness_cgi_decode(["Hello+Reader", "AguanteInge2"])
@@ -55,4 +55,4 @@ class TestGetFitnessCgiDecode(unittest.TestCase):
 
     def testStringWithAllConditions(self):
         fitness = get_fitness_cgi_decode(["Hello+R%eader"])
-        self.assertEqual(fitness, 1.5)
+        self.assertEqual(fitness, 1.0)

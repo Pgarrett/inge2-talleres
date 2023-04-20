@@ -9,7 +9,7 @@ def get_fitness_cgi_decode(test_suite):
             cgi_decode_instrumented(test_case)
         except Exception:
             pass
-    for i in range(0, 5):
+    for i in range(1, 6):
         if i in distances_true.keys():
             fitness += (distances_true[i]/(distances_true[i]+1))
             fitness += (distances_false[i]/(distances_false[i]+1))

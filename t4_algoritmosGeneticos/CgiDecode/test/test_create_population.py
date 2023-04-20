@@ -13,11 +13,12 @@ class TestCreatePopulation(unittest.TestCase):
         population = create_population(10)
         self.assertEqual(len(population), 10)
 
-    def testNewPopulationIsMaxOf15Cases(self):
-        population = create_population(20)
-        self.assertEqual(len(population), 15)
-
-    def testAllMembersOfPopulationAreLessThan10CharactersLong(self):
+    def testAllMembersOfPopulationHaveNotMoreThan15TestCases(self):
         population = create_population(12)
         for member in population:
-            self.assertTrue(len(member) <= 10)
+            self.assertTrue(len(member) <= 15)
+    def testAllMembersOfPopulationHaveNotMoreThan10CharactersLong(self):
+        population = create_population(12)
+        for member in population:
+            for characters in member:
+                self.assertTrue(len(characters) <= 10)
