@@ -19,5 +19,8 @@ def getRandomList():
 
 def getRandomString():
     stringSize = random.randint(0, 10)
+    return ''.join(getRandomChar() for _ in range(stringSize))
+
+def getRandomChar():
     characters = string.ascii_letters + string.digits + '''!()-[]{};:,<>.?@#$%^&*_~'''
-    return ''.join(random.choice(characters) for _ in range(stringSize))
+    return random.choice(characters)
