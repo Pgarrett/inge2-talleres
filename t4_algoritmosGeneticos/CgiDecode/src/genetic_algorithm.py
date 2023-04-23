@@ -11,14 +11,24 @@ generation: int = 0
 
 def generateCrossovers(population, p_crossover, seed):
     crossovers = []
-    for i in range(0, len(population), 2):
+    for i in range(0, len(population) - 2, 2):
         if random.random() < p_crossover:
-            offspring1, offspring2 = crossover(population[i], population[i+1], seed)
+            offspring1, offspring2 = crossover(population[i], population[i + 1], seed)
             crossovers.append(offspring1)
             crossovers.append(offspring2)
         else:
             crossovers.append(population[i])
-            crossovers.append(population[i+1])
+            crossovers.append(population[i + 1])
+    if len(population) % 2 == 1:
+        crossovers.append(population[len(population) - 1])
+    else:
+        if random.random() < p_crossover:
+            offspring1, offspring2 = crossover(population[i], population[i + 1], seed)
+            crossovers.append(offspring1)
+            crossovers.append(offspring2)
+        else:
+            crossovers.append(population[i])
+            crossovers.append(population[i + 1])
     return crossovers
 
 def generateMutations(population, p_mutation, seed):
