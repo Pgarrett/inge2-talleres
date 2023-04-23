@@ -15,23 +15,27 @@ def modifyTestCase(individual):
         individual[index] = individual[index] + getRandomChar()
     elif chosenOption == "modify":
         testCase = individual[index]
-        modifiedCharIndex = getRandomCharIndex(testCase)
-        individual[index] = testCase[:modifiedCharIndex] + getRandomChar() + testCase[modifiedCharIndex + 1:]
+        if testCase != "":
+            modifiedCharIndex = getRandomCharIndex(testCase)
+            individual[index] = testCase[:modifiedCharIndex] + getRandomChar() + testCase[modifiedCharIndex + 1:]
+        else:
+            individual[index] = individual[index] + getRandomChar()
     else:
         testCase = individual[index]
-        deletedCharIndex = getRandomCharIndex(testCase)
-        individual[index] = testCase[:deletedCharIndex] + testCase[deletedCharIndex + 1:]
+        if testCase != "":
+            deletedCharIndex = getRandomCharIndex(testCase)
+            individual[index] = testCase[:deletedCharIndex] + testCase[deletedCharIndex + 1:]
     return individual
 
+# Como el individuo sin casos de test no lo consideramos valido,
+# solo borramos un elemento si el individuo tiene mas de un caso de test
 def deleteTestCase(individual):
-    individual.pop(getRandomFrom(individual))
+    if len(individual) > 1:
+        individual.pop(getRandomFrom(individual))
     return individual
 
 def getRandomCharIndex(testCase):
-    charIndex = 0
-    if testCase != "":
-        charIndex = getRandomFrom(testCase)
-    return charIndex
+    return getRandomFrom(testCase) if testCase != "" else 0
 def getRandomFrom(individual):
     return random.randint(0, len(individual) - 1)
 
