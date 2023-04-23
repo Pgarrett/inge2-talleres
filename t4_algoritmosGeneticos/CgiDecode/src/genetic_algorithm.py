@@ -19,16 +19,6 @@ def generateCrossovers(population, p_crossover, seed):
         else:
             crossovers.append(population[i])
             crossovers.append(population[i + 1])
-    if len(population) % 2 == 1:
-        crossovers.append(population[len(population) - 1])
-    else:
-        if random.random() < p_crossover:
-            offspring1, offspring2 = crossover(population[i], population[i + 1], seed)
-            crossovers.append(offspring1)
-            crossovers.append(offspring2)
-        else:
-            crossovers.append(population[i])
-            crossovers.append(population[i + 1])
     return crossovers
 
 def generateMutations(population, p_mutation, seed):
@@ -36,6 +26,8 @@ def generateMutations(population, p_mutation, seed):
     for i in range(0, len(population)):
         if random.random() < p_mutation:
             mutations.append(mutate(population[i], seed))
+        else:
+            mutations.append(population[i])
     return mutations
 
 def coveredAllBranches(individual):
