@@ -1,7 +1,7 @@
 import random
 from src.create_population import create_population
 from src.crossover import crossover
-from src.evaluate_condition import distances_true
+from src.evaluate_condition import distances_true, clear_maps
 from src.evaluate_population import evaluate_population
 from src.get_fitness_cgi_decode import get_fitness_cgi_decode
 from src.mutate import mutate
@@ -36,7 +36,11 @@ def coveredAllBranches(individual):
             coveredAll &= True
         else:
             coveredAll &= False
+    clear_maps()
     return coveredAll
+
+def getGeneration():
+    return generation
 
 def genetic_algorithm(seed=None):
     global generation

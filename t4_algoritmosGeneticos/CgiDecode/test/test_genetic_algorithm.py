@@ -1,13 +1,14 @@
 #!./venv/bin/python
 import unittest
 
-from src.genetic_algorithm import genetic_algorithm, generation
+from src.genetic_algorithm import genetic_algorithm, getGeneration
 
 
 class TestMutate(unittest.TestCase):
     def test1(self):
         genetic_algorithm(2)
-        self.assertTrue(generation < 1000)
+        self.assertTrue(getGeneration() < 1000)
+        self.assertTrue(getGeneration() > 0)
 
     def test2(self):
         # COMPLETAR
