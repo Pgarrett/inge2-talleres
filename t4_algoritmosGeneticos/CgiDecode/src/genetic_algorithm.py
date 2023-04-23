@@ -11,7 +11,7 @@ generation: int = 0
 
 def generateCrossovers(population, p_crossover, seed):
     crossovers = []
-    for i in range(0, len(population) - 2, 2):
+    for i in range(0, len(population), 2):
         if random.random() < p_crossover:
             offspring1, offspring2 = crossover(population[i], population[i + 1], seed)
             crossovers.append(offspring1)
@@ -44,6 +44,11 @@ def coveredAllBranches(individual):
 def getGeneration():
     return generation
 
+def clearGeneration():
+    global generation
+    generation = 0
+    return generation
+
 def genetic_algorithm(seed=None):
     global generation
     population_size = 100
@@ -65,7 +70,7 @@ def genetic_algorithm(seed=None):
     # y no haya ningun individuo que cubra todos los objetivos
 
     while generation < 1000 and not coveredAllBranches(best_individual):
-
+        print("generation: ", generation)
         # Producir una nueva poblacion en base a la anterior.
         # Usar selection, crossover y mutation.
         new_population = generateMutations(generateCrossovers(population, p_crossover, seed), p_mutation, seed)
