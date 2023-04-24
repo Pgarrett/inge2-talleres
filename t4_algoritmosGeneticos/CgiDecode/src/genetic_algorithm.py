@@ -12,6 +12,11 @@ best_fitness_ini_population: int = 0
 init_branch_coverage: int = 0
 end_branch_coverage: int = 0
 
+# Las funciones: coveredAllBranches, branchCoverageFor, evaluateInitialGenerationPopulation, getGeneration,
+# bestFitnessIniPopulation, getInitBranchCoverage, getEndBranchCoverage, clearGeneration y las variables:
+# best_fitness_ini_population, init_branch_coverage, end_branch_coverage existen para poder testear mejor. Lo mismo
+# que el hacer que generation sea global
+
 def generateCrossovers(population, p_crossover, seed):
     crossovers = []
     for i in range(0, len(population), 2):
