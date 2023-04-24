@@ -10,6 +10,8 @@ from src.selection import selection
 generation: int = 0
 best_fitness_ini_population: int = 0
 worst_fitness_ini_population: int = 0
+init_branch_coverage: int = 0
+end_branch_coverage: int = 0
 
 def generateCrossovers(population, p_crossover, seed):
     crossovers = []
@@ -43,6 +45,15 @@ def coveredAllBranches(individual):
     clear_maps()
     return coveredAll
 
+def branchCoverageFor(individual):
+    get_fitness_cgi_decode(individual)
+    coveredUpTo = 1
+    for i in range(1, 6):
+        if i in distances_true.keys():
+            coveredUpTo = i
+    clear_maps()
+    return coveredUpTo
+
 def evaluateInitialGenerationPopulation(population):
     global best_fitness_ini_population
     global worst_fitness_ini_population
@@ -62,16 +73,28 @@ def bestFitnessIniPopulation():
 def worstFitnessIniPopulation():
     return worst_fitness_ini_population
 
+def getInitBranchCoverage():
+    return init_branch_coverage
+
+def getEndBranchCoverage():
+    return end_branch_coverage
+
 def clearGeneration():
     global generation
     global best_fitness_ini_population
     global worst_fitness_ini_population
+    global init_branch_coverage
+    global end_branch_coverage
     best_fitness_ini_population = 0
     worst_fitness_ini_population = 0
+    init_branch_coverage = 0
+    end_branch_coverage = 0
     generation = 0
 
 def genetic_algorithm(seed=None):
     global generation
+    global init_branch_coverage
+    global end_branch_coverage
     population_size = 100
     tournament_size = 5
     p_crossover = 0.70
@@ -85,7 +108,8 @@ def genetic_algorithm(seed=None):
     # Imprimir el mejor valor de fitness encontrado
     best_individual_index, fitness_best_individual = selection(evaluated_population, tournament_size)
     best_individual = population[best_individual_index]
-    print("Best fitness value: " + str(fitness_best_individual))
+    init_branch_coverage = branchCoverageFor(best_individual)
+    # print("Best fitness value: " + str(fitness_best_individual))
 
     # Continuar mientras la cantidad de generaciones es menor que 1000
     # y no haya ningun individuo que cubra todos los objetivos
@@ -102,8 +126,9 @@ def genetic_algorithm(seed=None):
         # Evaluar la nueva poblacion e imprimir el mejor valor de fitness
         evaluated_population = evaluate_population(population)
         best_individual_index, fitness_best_individual = selection(evaluated_population, tournament_size)
-        print("New best fitness value: " + str(fitness_best_individual))
+        # print("New best fitness value: " + str(fitness_best_individual))
         best_individual = population[best_individual_index]
 
     # retornar el mejor individuo de la ultima generacion
+    end_branch_coverage = branchCoverageFor(best_individual)
     return best_individual

@@ -1,7 +1,8 @@
 #!./venv/bin/python
 import unittest
 
-from src.genetic_algorithm import genetic_algorithm, getGeneration, clearGeneration, bestFitnessIniPopulation, worstFitnessIniPopulation
+from src.genetic_algorithm import genetic_algorithm, getGeneration, clearGeneration, bestFitnessIniPopulation, \
+    worstFitnessIniPopulation, getEndBranchCoverage, getInitBranchCoverage
 from src.get_fitness_cgi_decode import get_fitness_cgi_decode
 
 # [i1,..., in] => [ i_k, i_j]
@@ -53,18 +54,19 @@ class TestMutate(unittest.TestCase):
     #     # COMPLETAR
     #     pass
     #
-    # def test7(self):
-    #     # COMPLETAR
-    #     pass
-    #
-    # def test8(self):
-    #     # COMPLETAR
-    #     pass
-    #
-    # def test9(self):
-    #     # COMPLETAR
-    #     pass
-    #
-    # def test10(self):
-    #     # COMPLETAR
-    #     pass
+    def testInitialCoverageIsWorseThanGeneticResult(self):
+        genetic_algorithm(0)
+        self.assertTrue(getInitBranchCoverage() < getEndBranchCoverage())
+
+    def testInitialCoverageIsEqualToGeneticResult(self):
+        genetic_algorithm(4)
+        self.assertEqual(getInitBranchCoverage(), getEndBranchCoverage())
+
+    def testInitialCoverageIsBetterThanGeneticResult(self):
+        genetic_algorithm(62)
+        self.assertTrue(getInitBranchCoverage() > getEndBranchCoverage())
+
+    def testUsingNoSeedGeneratesDifferentIndividuals(self):
+        firstIndividual = genetic_algorithm()
+        secondIndividual = genetic_algorithm()
+        self.assertNotEqual(firstIndividual, secondIndividual)
