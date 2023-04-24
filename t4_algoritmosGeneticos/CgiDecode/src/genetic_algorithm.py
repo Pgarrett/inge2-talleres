@@ -9,7 +9,6 @@ from src.selection import selection
 
 generation: int = 0
 best_fitness_ini_population: int = 0
-worst_fitness_ini_population: int = 0
 init_branch_coverage: int = 0
 end_branch_coverage: int = 0
 
@@ -56,11 +55,9 @@ def branchCoverageFor(individual):
 
 def evaluateInitialGenerationPopulation(population):
     global best_fitness_ini_population
-    global worst_fitness_ini_population
     evaluatedPopulation = evaluate_population(population)
     fitnessValues = evaluatedPopulation.values()
     best_fitness_ini_population = min(fitnessValues)
-    worst_fitness_ini_population = max(fitnessValues)
 
     return evaluatedPopulation
 
@@ -69,9 +66,6 @@ def getGeneration():
 
 def bestFitnessIniPopulation():
     return best_fitness_ini_population
-
-def worstFitnessIniPopulation():
-    return worst_fitness_ini_population
 
 def getInitBranchCoverage():
     return init_branch_coverage
@@ -82,11 +76,9 @@ def getEndBranchCoverage():
 def clearGeneration():
     global generation
     global best_fitness_ini_population
-    global worst_fitness_ini_population
     global init_branch_coverage
     global end_branch_coverage
     best_fitness_ini_population = 0
-    worst_fitness_ini_population = 0
     init_branch_coverage = 0
     end_branch_coverage = 0
     generation = 0

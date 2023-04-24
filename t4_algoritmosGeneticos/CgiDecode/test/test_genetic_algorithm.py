@@ -2,7 +2,7 @@
 import unittest
 
 from src.genetic_algorithm import genetic_algorithm, getGeneration, clearGeneration, bestFitnessIniPopulation, \
-    worstFitnessIniPopulation, getEndBranchCoverage, getInitBranchCoverage
+    getEndBranchCoverage, getInitBranchCoverage
 from src.get_fitness_cgi_decode import get_fitness_cgi_decode
 
 # [i1,..., in] => [ i_k, i_j]
@@ -11,10 +11,10 @@ from src.get_fitness_cgi_decode import get_fitness_cgi_decode
 # 1) Sale del while por que cubrio todos los branchs pero con generaciones posterioores : test1
 # 2) Sale del while por que cubrio todos los branchs pero con la poblacion inicial : test2
 # 3) Sale del while por que se le acabo el presupuesto test3
-# fitness (3 .. n)
-# 1) el individuo del algoritmo genetico es mejor que todos los individuos iniciales: (2 <3): test4
-# 2) el individuo del algoritmo genetico esta rango dentro de la población inicial: (3 <= 4 <= n): test5
-# 3) el individuo del algoritmo genetico es peor que todos los individuos iniciales: (n < n+1)
+# fitness
+# 1) El individuo del algoritmo genetico su valor de fitness es peor que el mejor valor de fitness individuo de la poblacion inicial: test4
+# 1) El individuo del algoritmo genetico su valor de fitness es igual que el mejor valor de fitness individuo de la poblacion inicial: test5
+# 1) El individuo del algoritmo genetico su valor de fitness es mejor que el mejor valor de fitness individuo de la poblacion inicial: test6
 # branch coverage c1,..,ci,..,c5
 # 1) el individuo del algoritmo genetico tiene mejor covertura de branch que la poblacion inicial
 # 2) el individuo del algoritmo genetico tiene igual covertura de branch que la poblacion inicial
@@ -45,15 +45,15 @@ class TestMutate(unittest.TestCase):
         self.assertTrue(bestFitnessIniPopulation() > bestFitness)
 
     def test5(self):
+        bestIndividual = genetic_algorithm(29)
+        bestFitness = get_fitness_cgi_decode(bestIndividual)
+        self.assertEqual(bestFitnessIniPopulation(), bestFitness)
+
+    def test6(self):
         bestIndividual = genetic_algorithm(16)
         bestFitness = get_fitness_cgi_decode(bestIndividual)
-        self.assertTrue(bestFitnessIniPopulation() <= bestFitness)
-        self.assertTrue(worstFitnessIniPopulation() >= bestFitness)
+        self.assertTrue(bestFitnessIniPopulation() < bestFitness)
 
-    # def test6(self):
-    #     # COMPLETAR
-    #     pass
-    #
     def testInitialCoverageIsWorseThanGeneticResult(self):
         genetic_algorithm(0)
         self.assertTrue(getInitBranchCoverage() < getEndBranchCoverage())
