@@ -63,9 +63,11 @@ class MagicFuzzer:
         self.doRun(mutated)
 
     def run(self, n = None) -> int:
-        """
-        Corre una campaña del MagicFuzzer.
-        La campaña debe ser ejecutada por n iteraciones (si n no es None), o hasta cubrir todas las líneas del programa.
-        Retorna la cantidad de iteraciones realizadas.
-        """
-        pass
+        if n is None:
+            return 0
+        for i in range(0, n):
+            self.fuzz()
+            for key in self.locationsPerInput.keys():
+                if len(self.locationsPerInput[key]) == 5:
+                    return i
+        return n
