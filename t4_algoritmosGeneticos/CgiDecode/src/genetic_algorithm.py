@@ -8,6 +8,8 @@ from src.mutate import mutate
 from src.selection import selection
 
 generation: int = 0
+best_fitness_ini_population: int = 0
+worst_fitness_ini_population: int = 0
 
 def generateCrossovers(population, p_crossover, seed):
     crossovers = []
@@ -41,13 +43,32 @@ def coveredAllBranches(individual):
     clear_maps()
     return coveredAll
 
+def evaluateInitialGenerationPopulation(population):
+    global best_fitness_ini_population
+    global worst_fitness_ini_population
+    evaluatedPopulation = evaluate_population(population)
+    fitnessValues = evaluatedPopulation.values()
+    best_fitness_ini_population = min(fitnessValues)
+    worst_fitness_ini_population = max(fitnessValues)
+
+    return evaluatedPopulation
+
 def getGeneration():
     return generation
 
+def bestFitnessIniPopulation():
+    return best_fitness_ini_population
+
+def worstFitnessIniPopulation():
+    return worst_fitness_ini_population
+
 def clearGeneration():
     global generation
+    global best_fitness_ini_population
+    global worst_fitness_ini_population
+    best_fitness_ini_population = 0
+    worst_fitness_ini_population = 0
     generation = 0
-    return generation
 
 def genetic_algorithm(seed=None):
     global generation
@@ -59,7 +80,7 @@ def genetic_algorithm(seed=None):
     # Generar y evaluar la poblacion inicial
 
     population = create_population(population_size, seed)
-    evaluated_population = evaluate_population(population)
+    evaluated_population = evaluateInitialGenerationPopulation(population)
 
     # Imprimir el mejor valor de fitness encontrado
     best_individual_index, fitness_best_individual = selection(evaluated_population, tournament_size)
@@ -70,7 +91,6 @@ def genetic_algorithm(seed=None):
     # y no haya ningun individuo que cubra todos los objetivos
 
     while generation < 1000 and not coveredAllBranches(best_individual):
-        print("generation: ", generation)
         # Producir una nueva poblacion en base a la anterior.
         # Usar selection, crossover y mutation.
         new_population = generateMutations(generateCrossovers(population, p_crossover, seed), p_mutation, seed)
