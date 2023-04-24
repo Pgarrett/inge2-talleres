@@ -1,29 +1,36 @@
+import random
 from typing import List, Set
 from fuzzingbook.Coverage import Location
-from fuzzingbook.MutationFuzzer import FunctionCoverageRunner
+from fuzzingbook.MutationFuzzer import FunctionCoverageRunner, insert_random_character, flip_random_character, \
+    delete_random_character
+
+from src.roulette_input_selector import RouletteInputSelector
 
 
 class MagicFuzzer:
 
-
     def __init__(self, initial_inputs, function_to_call, function_name_to_call = None) -> None:
         self.function_name_to_call = function_name_to_call
-        crashme_runner = FunctionCoverageRunner(function_to_call)
-        self.initial_inputs = initial_inputs
+        self.crashme_runner = FunctionCoverageRunner(function_to_call)
+        self.executed_inputs = []
         self.locationsPerInput = {}
-        for input in self.initial_inputs:
-            result, outcome = crashme_runner.run(input)
-            locations = crashme_runner.coverage()
-            locationsSet = set()
-            for loc in locations:
-                if loc[0] == self.function_name_to_call:
-                    locationsSet.add(loc)
-            self.locationsPerInput[input] = locationsSet
+        for input in initial_inputs:
+            self.doRun(input)
+
+    def doRun(self, s: str):
+        self.executed_inputs.append(s)
+        self.crashme_runner.run(s)
+        locations = self.crashme_runner.coverage()
+        locationsSet = set()
+        for loc in locations:
+            if loc[0] == self.function_name_to_call:
+                locationsSet.add(loc)
+        self.locationsPerInput[s] = locationsSet
 
     def get_contributing_inputs(self) -> List[str]:
         coveredLocations = set()
         result = []
-        for input in self.initial_inputs:
+        for input in self.executed_inputs:
             inputLocations = self.locationsPerInput[input]
             for loc in inputLocations:
                 if loc not in coveredLocations:
@@ -40,15 +47,20 @@ class MagicFuzzer:
         return maxCoveredLocations
 
     def mutate(self, s: str) -> str:
-        """Aplica al azar alguna de las tres operaciones de mutacion definidas en el archivo mutation_utils.py"""
-        pass
+        optionChosen = random.choices(["add", "flip", "delete"])[0]
+        if optionChosen == "add":
+            return insert_random_character(s)
+        elif optionChosen == "flip":
+            return flip_random_character(s)
+        else:
+            return delete_random_character(s)
 
     def fuzz(self):
-        """
-        Elije aleatoriamente un input s usando seleccion de ruleta sobre e(s),
-        muta el input s utilizando la función mutate(s), y ejecuta el s mutado
-        """
-        pass
+        selector = RouletteInputSelector(2)
+        for input in self.executed_inputs:
+            selector.add_new_execution(input, self.locationsPerInput[input])
+        mutated = self.mutate(selector.select())
+        self.doRun(mutated)
 
     def run(self, n = None) -> int:
         """
