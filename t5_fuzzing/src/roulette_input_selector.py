@@ -10,6 +10,8 @@ class RouletteInputSelector:
         self.exponent = exponent
         self.inputsByPath = {}
         self.inputs = []
+        self.energy_by_input = {}
+        self.total_energy = 0
 
     def add_new_execution(self, s: str, s_path: Set[Location]):
         self.inputs.append(s)
@@ -20,6 +22,9 @@ class RouletteInputSelector:
             l = []
             l.append(s)
             self.inputsByPath[hash] = l
+        energy = self.get_energy(s)
+        self.energy_by_input[s] = energy
+        self.total_energy += energy
 
     def get_frequency(self, s: str) -> int:
         for key in self.inputsByPath.keys():
@@ -33,12 +38,12 @@ class RouletteInputSelector:
 
     def select(self) -> str:
         weights = []
-        energyByInput = {}
-        energySum = 0
+        # energyByInput = {}
+        # energySum = 0
+        # for input in self.inputs:
+        #     energy = self.get_energy(input)
+        #     energyByInput[input] = energy
+        #     energySum += energy
         for input in self.inputs:
-            energy = self.get_energy(input)
-            energyByInput[input] = energy
-            energySum += energy
-        for input in self.inputs:
-            weights.append((energyByInput[input]/energySum))
+            weights.append((self.energy_by_input[input]/self.total_energy))
         return random.choices(self.inputs, weights=weights)[0]

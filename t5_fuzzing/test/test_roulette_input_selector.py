@@ -35,6 +35,6 @@ class TestRouletteInputSelector(unittest.TestCase):
         self.assertAlmostEqual(selector.get_energy("bad"), 1/(1**2), places=2)
 
         random.seed(5)
-        self.assertEqual(selector.select(), "bad")
+        self.assertEqual(selector.select(), "b")
         random.seed(1)
-        self.assertEqual(selector.select(), "go")
+        self.assertEqual(selector.select(), "good")

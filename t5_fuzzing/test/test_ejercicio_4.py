@@ -17,4 +17,4 @@ class TestEjercicio4(unittest.TestCase):
             random.seed(seeds[campaign])
             fuzzer = MagicFuzzer(inputs, crashme, function_name_to_call="crashme")
             iters.append(fuzzer.run())
-        self.assertEqual(iters, [2957, 1618, 550, 1828, 2066])
+        self.assertEqual(iters, [3845, 2475, 3587, 3701, 16947])

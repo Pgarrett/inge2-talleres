@@ -15,6 +15,7 @@ class MagicFuzzer:
         self.crashme_runner = FunctionCoverageRunner(function_to_call)
         self.executed_inputs = []
         self.locationsPerInput = {}
+        self.selector = RouletteInputSelector(2)
         for input in initial_inputs:
             self.doRun(input)
 
@@ -30,6 +31,7 @@ class MagicFuzzer:
             else:
                 locationsSet.add(loc)
         self.locationsPerInput[s] = locationsSet
+        self.selector.add_new_execution(s, locationsSet)
 
     def get_contributing_inputs(self) -> List[str]:
         coveredLocations = set()
@@ -60,10 +62,7 @@ class MagicFuzzer:
             return delete_random_character(s)
 
     def fuzz(self):
-        selector = RouletteInputSelector(2)
-        for input in self.executed_inputs:
-            selector.add_new_execution(input, self.locationsPerInput[input])
-        mutated = self.mutate(selector.select())
+        mutated = self.mutate(self.selector.select())
         self.doRun(mutated)
 
     def run(self, n = None) -> int:
@@ -74,8 +73,6 @@ class MagicFuzzer:
             return iteration
         else:
             for i in range(0, n):
-                if i % 100 == 0:
-                    print("Iteration i: " + str(i))
                 self.fuzz()
             return n
 
