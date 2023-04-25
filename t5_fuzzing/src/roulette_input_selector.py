@@ -38,12 +38,6 @@ class RouletteInputSelector:
 
     def select(self) -> str:
         weights = []
-        # energyByInput = {}
-        # energySum = 0
-        # for input in self.inputs:
-        #     energy = self.get_energy(input)
-        #     energyByInput[input] = energy
-        #     energySum += energy
         for input in self.inputs:
             weights.append((self.energy_by_input[input]/self.total_energy))
         return random.choices(self.inputs, weights=weights)[0]

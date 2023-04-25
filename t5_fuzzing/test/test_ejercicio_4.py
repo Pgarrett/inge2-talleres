@@ -8,7 +8,6 @@ from src.magic_fuzzer import MagicFuzzer
 
 class TestEjercicio4(unittest.TestCase):
 
-    # En mi compu tardo 1 minuto 44 segundos, una ganga
     def testRunning5IterationsGeneratesNewCoveredLocations(self):
         inputs = [" "]
         iters = []

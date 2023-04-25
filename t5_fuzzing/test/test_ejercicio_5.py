@@ -9,7 +9,6 @@ from src.my_parser import my_parser
 
 class TestEjercicio5(unittest.TestCase):
 
-    # Esto toma 37 minutos
     def test(self):
         inputs = [" "]
         linesCovered = []
