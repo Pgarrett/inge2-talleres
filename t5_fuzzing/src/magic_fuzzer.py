@@ -10,6 +10,7 @@ from src.roulette_input_selector import RouletteInputSelector
 class MagicFuzzer:
 
     def __init__(self, initial_inputs, function_to_call, function_name_to_call = None) -> None:
+        self.maxCoverage = 0
         self.function_name_to_call = function_name_to_call
         self.crashme_runner = FunctionCoverageRunner(function_to_call)
         self.executed_inputs = []
@@ -23,7 +24,10 @@ class MagicFuzzer:
         locations = self.crashme_runner.coverage()
         locationsSet = set()
         for loc in locations:
-            if loc[0] == self.function_name_to_call:
+            if self.function_name_to_call is not None:
+                if loc[0] == self.function_name_to_call:
+                    locationsSet.add(loc)
+            else:
                 locationsSet.add(loc)
         self.locationsPerInput[s] = locationsSet
 
@@ -64,10 +68,27 @@ class MagicFuzzer:
 
     def run(self, n = None) -> int:
         if n is None:
-            return 0
-        for i in range(0, n):
-            self.fuzz()
-            for key in self.locationsPerInput.keys():
-                if len(self.locationsPerInput[key]) == 5:
-                    return i
-        return n
+            iteration = 1
+            while not self.campaignCoveredAllCrashMe():
+                iteration += 1
+            return iteration
+        else:
+            for i in range(0, n):
+                if i % 100 == 0:
+                    print("Iteration i: " + str(i))
+                self.fuzz()
+            return n
+
+    def campaignCoveredAllCrashMe(self):
+        self.fuzz()
+        for key in self.locationsPerInput.keys():
+            if len(self.locationsPerInput[key]) == 5:
+                return True
+        return False
+
+    def allCrashMeHaveBeenIterated(self, locations: Set[Location]):
+        crashMeLines = [("crashme", 6), ("crashme", 7), ("crashme", 8), ("crashme", 9), ("crashme", 10)]
+        result = True
+        for line in crashMeLines:
+            result &= line in locations
+        return result

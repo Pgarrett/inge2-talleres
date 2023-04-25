@@ -8,12 +8,13 @@ from src.magic_fuzzer import MagicFuzzer
 
 class TestEjercicio4(unittest.TestCase):
 
+    # En mi compu tardo 1 minuto 44 segundos, una ganga
     def testRunning5IterationsGeneratesNewCoveredLocations(self):
         inputs = [" "]
-        fuzzer = MagicFuzzer(inputs, crashme, function_name_to_call="crashme")
-        self.assertSetEqual(fuzzer.get_covered_locations(), set([("crashme", 6)]))
-        self.assertListEqual(fuzzer.get_contributing_inputs(), inputs)
-        random.seed(32)
-        fuzzer.run(5)
-        self.assertSetEqual(fuzzer.get_covered_locations(), set([("crashme", 6), ("crashme", 7)]))
-        self.assertListEqual(fuzzer.get_contributing_inputs(), [" ", "b "])
+        iters = []
+        seeds = [2, 3, 4, 7, 8]
+        for campaign in range(0, 5):
+            random.seed(seeds[campaign])
+            fuzzer = MagicFuzzer(inputs, crashme, function_name_to_call="crashme")
+            iters.append(fuzzer.run())
+        self.assertEqual(iters, [2957, 1618, 550, 1828, 2066])
