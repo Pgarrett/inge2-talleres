@@ -82,10 +82,3 @@ class MagicFuzzer:
             if len(self.locationsPerInput[key]) == 5:
                 return True
         return False
-
-    def allCrashMeHaveBeenIterated(self, locations: Set[Location]):
-        crashMeLines = [("crashme", 6), ("crashme", 7), ("crashme", 8), ("crashme", 9), ("crashme", 10)]
-        result = True
-        for line in crashMeLines:
-            result &= line in locations
-        return result
