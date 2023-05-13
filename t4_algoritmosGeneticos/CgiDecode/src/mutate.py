@@ -41,7 +41,8 @@ def getRandomFrom(individual):
 
 def mutate(individual, seed=None):
     mutatedIndividual = individual.copy()
-    random.seed(seed)
+    if seed is not None:
+        random.seed(seed)
     chosenOption = random.choices(options, equiprobability)[0]
     if chosenOption == "add":
         return addTestCase(mutatedIndividual)

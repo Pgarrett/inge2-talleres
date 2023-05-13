@@ -34,26 +34,26 @@ def evaluate_condition(condition_num, op, lhs, rhs):
         newLhs = lhs if type(lhs) is int else ord(lhs)
         newRhs = rhs if type(rhs) is int else ord(rhs)
         diff = abs(newLhs - newRhs)
-        distanceTrue = diff if diff > 0 else 0
-        distanceFalse = 1 if diff == 0 else 0
+        distanceTrue = 0 if diff == 0 else diff
+        distanceFalse = 0 if diff != 0 else k
     elif(op == "Ne"):
         newLhs = lhs if type(lhs) is int else ord(lhs)
         newRhs = rhs if type(rhs) is int else ord(rhs)
         diff = abs(newLhs - newRhs)
-        distanceTrue = 1 if diff == 0 else 0
-        distanceFalse = diff if diff > 0 else 0
+        distanceTrue = 0 if diff != 0 else k
+        distanceFalse = 0 if diff == 0 else diff
     elif (op == "Le"):
-        distanceTrue = 0 if (lhs <= rhs) else abs(lhs - rhs)
-        distanceFalse = abs(lhs - rhs) + k if (lhs <= rhs) else 0
+        distanceTrue = 0 if (lhs <= rhs) else (lhs - rhs)
+        distanceFalse = 0 if (lhs > rhs) else (rhs - lhs) + k
     elif (op == "Lt"):
-        distanceTrue = 0 if (lhs < rhs) else abs(lhs - rhs) + k
-        distanceFalse = abs(lhs - rhs) if (lhs < rhs) else 0
+        distanceTrue = 0 if (lhs < rhs) else (lhs - rhs) + k
+        distanceFalse = 0 if (lhs >= rhs) else (rhs - lhs)
     elif (op == "Ge"):
-        distanceTrue = 0 if (lhs >= rhs) else abs(lhs - rhs) + k
-        distanceFalse = abs(lhs - rhs) + k if (lhs >= rhs) else 0
+        distanceTrue = 0 if (lhs >= rhs) else (rhs - lhs)
+        distanceFalse = 0 if (lhs < rhs) else (lhs - rhs) + k
     elif (op == "Gt"):
-        distanceTrue = 0 if (lhs > rhs) else abs(lhs - rhs) + k
-        distanceFalse = abs(lhs - rhs) if (lhs > rhs) else 0
+        distanceTrue = 0 if (lhs > rhs) else (rhs - lhs) + k
+        distanceFalse = 0 if (lhs <= rhs) else (lhs - rhs)
     elif (op == "In"):
         distanceTrue = sys.maxsize
         distanceFalse = 0

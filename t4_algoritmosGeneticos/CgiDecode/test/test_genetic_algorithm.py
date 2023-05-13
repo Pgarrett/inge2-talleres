@@ -1,27 +1,10 @@
 #!./venv/bin/python
 import unittest
 
-from src.evaluate_condition import clear_maps
-from src.genetic_algorithm import genetic_algorithm, getGeneration, clearGeneration, bestFitnessIniPopulation, \
-    getEndBranchCoverage, getInitBranchCoverage
+from src.evaluate_condition import clear_maps, distances_true, distances_false
+from src.genetic_algorithm import genetic_algorithm, getGeneration, clearGeneration, getSeedUsed
 from src.get_fitness_cgi_decode import get_fitness_cgi_decode
 
-# [i1,..., in] => [ i_k, i_j]
-
-# cantidad de generaciones:
-# 1) Sale del while por que cubrio todos los branchs pero con generaciones posterioores : test1
-# 2) Sale del while por que cubrio todos los branchs pero con la poblacion inicial : test2
-# 3) Sale del while por que se le acabo el presupuesto test3
-# fitness
-# 1) El individuo del algoritmo genetico su valor de fitness es mejor que el mejor valor de fitness individuo de la poblacion inicial: test4
-# 2) El individuo del algoritmo genetico su valor de fitness es igual que el mejor valor de fitness individuo de la poblacion inicial: test5
-# 3) El individuo del algoritmo genetico su valor de fitness es peor que el mejor valor de fitness individuo de la poblacion inicial: test6
-# branch coverage c1,..,ci,..,c5
-# 1) el individuo del algoritmo genetico tiene mejor covertura de branch que la poblacion inicial
-# 2) el individuo del algoritmo genetico tiene igual covertura de branch que la poblacion inicial
-# 3) el individuo del algoritmo genetico tiene peor covertura de branch que la poblacion inicial
-# random
-# 1) dos generaciones distintas dan individuos distintos
 
 class TestGenetic(unittest.TestCase):
 
@@ -29,48 +12,100 @@ class TestGenetic(unittest.TestCase):
         clearGeneration()
         clear_maps()
 
-    def testExecutesMoreThanOneGeneration(self):
-        genetic_algorithm(5)
-        self.assertTrue(getGeneration() < 1000)
-        self.assertTrue(getGeneration() > 0)
+    def getFitnessAndBranchCoverage(self, individual):
+        fitness = get_fitness_cgi_decode(individual)
+        branchCoverage = self.branchCoverageFor()
+        clear_maps()
+        return fitness, branchCoverage
+    def branchCoverageFor(self):
+        coveredUpTo = 1
+        for i in range(1, 4):
+            if i in distances_true.keys() and distances_true[i] == 0:
+                coveredUpTo += 1
+            if i in distances_false.keys() and distances_false[i] == 0:
+                coveredUpTo += 1
+        if 4 in distances_true.keys() and 5 in distances_true.keys() and distances_true[4] == 0 and distances_true[5] == 0:
+            coveredUpTo += 1
+        if 4 not in distances_false.keys() or 5 not in distances_false.keys() or distances_true[4] != 0 or distances_true[5] != 0:
+            coveredUpTo += 1
+        return coveredUpTo/8
 
-    def testInitialPopulationCoversAllTargets(self):
-        genetic_algorithm(16)
-        self.assertTrue(getGeneration() < 1000)
-        self.assertEqual(getGeneration(), 0)
+    def test1(self):
+        result = genetic_algorithm(1)
+        self.assertEqual(getSeedUsed(), 1)
+        self.assertEqual(getGeneration(), 1)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def test1000GenerationsAreNotEnough(self):
-        genetic_algorithm(11)
-        self.assertEqual(getGeneration(), 1000)
+    def test2(self):
+        result = genetic_algorithm(945)
+        self.assertEqual(getSeedUsed(), 945)
+        self.assertEqual(getGeneration(), 2)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testGeneticResultHasBetterFitnessThanBestInitialPopulation(self):
-        bestIndividual = genetic_algorithm(135)
-        bestFitness = get_fitness_cgi_decode(bestIndividual)
-        self.assertTrue(bestFitnessIniPopulation() > bestFitness)
+    def test3(self):
+        result = genetic_algorithm(3)
+        self.assertEqual(getSeedUsed(), 3)
+        self.assertEqual(getGeneration(), 4)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testGeneticResultHasEqualFitnessThanBestInitialPopulation(self):
-        bestIndividual = genetic_algorithm(29)
-        bestFitness = get_fitness_cgi_decode(bestIndividual)
-        self.assertEqual(bestFitnessIniPopulation(), bestFitness)
+    def test4(self):
+        result = genetic_algorithm(4)
+        self.assertEqual(getSeedUsed(), 4)
+        self.assertEqual(getGeneration(), 3)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testGeneticResultHasWorseFitnessThanBestInitialPopulation(self):
-        bestIndividual = genetic_algorithm(16)
-        bestFitness = get_fitness_cgi_decode(bestIndividual)
-        self.assertTrue(bestFitnessIniPopulation() < bestFitness)
+    def test5(self):
+        result = genetic_algorithm(5)
+        self.assertEqual(getSeedUsed(), 5)
+        self.assertEqual(getGeneration(), 1)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testInitialCoverageIsWorseThanGeneticResult(self):
-        genetic_algorithm(0)
-        self.assertTrue(getInitBranchCoverage() < getEndBranchCoverage())
+    def test6(self):
+        result = genetic_algorithm(6)
+        self.assertEqual(getSeedUsed(), 6)
+        self.assertEqual(getGeneration(), 18)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testInitialCoverageIsEqualToGeneticResult(self):
-        genetic_algorithm(4)
-        self.assertEqual(getInitBranchCoverage(), getEndBranchCoverage())
+    def test7(self):
+        result = genetic_algorithm(7)
+        self.assertEqual(getSeedUsed(), 7)
+        self.assertEqual(getGeneration(), 3)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testInitialCoverageIsBetterThanGeneticResult(self):
-        genetic_algorithm(62)
-        self.assertTrue(getInitBranchCoverage() > getEndBranchCoverage())
+    def test8(self):
+        result = genetic_algorithm(8)
+        self.assertEqual(getSeedUsed(), 8)
+        self.assertEqual(getGeneration(), 2)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
 
-    def testUsingNoSeedGeneratesDifferentIndividuals(self):
-        firstIndividual = genetic_algorithm()
-        secondIndividual = genetic_algorithm()
-        self.assertNotEqual(firstIndividual, secondIndividual)
+    def test9(self):
+        result = genetic_algorithm(9)
+        self.assertEqual(getSeedUsed(), 9)
+        self.assertEqual(getGeneration(), 3)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)
+
+    def test10(self):
+        result = genetic_algorithm(10)
+        self.assertEqual(getSeedUsed(), 10)
+        self.assertEqual(getGeneration(), 3)
+        fitness, branchCoverage = self.getFitnessAndBranchCoverage(result)
+        self.assertEqual(fitness, 0)
+        self.assertEqual(branchCoverage, 1)

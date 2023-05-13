@@ -1,120 +1,100 @@
 import random
 from src.create_population import create_population
 from src.crossover import crossover
-from src.evaluate_condition import distances_true, clear_maps
 from src.evaluate_population import evaluate_population
-from src.get_fitness_cgi_decode import get_fitness_cgi_decode
 from src.mutate import mutate
 from src.selection import selection
 
 generation: int = 0
-best_fitness_ini_population: int = 0
-init_branch_coverage: int = 0
-end_branch_coverage: int = 0
+seedUsed: int = 0
+init_best_individual = []
 
-# Las funciones: coveredAllBranches, branchCoverageFor, evaluateInitialGenerationPopulation, getGeneration,
-# bestFitnessIniPopulation, getInitBranchCoverage, getEndBranchCoverage, clearGeneration y las variables:
-# best_fitness_ini_population, init_branch_coverage, end_branch_coverage existen para poder testear mejor. Lo mismo
-# que el hacer que generation sea global
 
-def generateCrossovers(population, p_crossover, seed):
+def generateCrossovers(population, evaluated_population, p_crossover, population_size, tournament_size):
     crossovers = []
-    for i in range(0, len(population), 2):
+    while len(crossovers) < population_size:
+        parent1Index, _ = selection(evaluated_population, tournament_size)
+        parent2Index, _ = selection(evaluated_population, tournament_size)
+        parent1 = population[parent1Index]
+        parent2 = population[parent2Index]
         if random.random() < p_crossover:
-            offspring1, offspring2 = crossover(population[i], population[i + 1], seed)
+            offspring1, offspring2 = crossover(parent1, parent2)
             crossovers.append(offspring1)
             crossovers.append(offspring2)
         else:
-            crossovers.append(population[i])
-            crossovers.append(population[i + 1])
+            crossovers.append(parent1)
+            crossovers.append(parent2)
     return crossovers
 
-def generateMutations(population, p_mutation, seed):
+
+def generateMutations(population, p_mutation):
     mutations = []
     for i in range(0, len(population)):
         if random.random() < p_mutation:
-            mutations.append(mutate(population[i], seed))
+            mutations.append(mutate(population[i]))
         else:
             mutations.append(population[i])
     return mutations
 
-def coveredAllBranches(individual):
-    get_fitness_cgi_decode(individual)
-    coveredAll = True
-    for i in range(1, 6):
-        if i in distances_true.keys():
-            coveredAll &= True
-        else:
-            coveredAll &= False
-    clear_maps()
-    return coveredAll
 
-def branchCoverageFor(individual):
-    get_fitness_cgi_decode(individual)
-    coveredUpTo = 1
-    for i in range(1, 6):
-        if i in distances_true.keys():
-            coveredUpTo = i
-    clear_maps()
-    return coveredUpTo
+def coveredAllBranches(fitness_individual):
+    return fitness_individual == 0
 
-def evaluateInitialGenerationPopulation(population):
-    global best_fitness_ini_population
-    evaluatedPopulation = evaluate_population(population)
-    fitnessValues = evaluatedPopulation.values()
-    best_fitness_ini_population = min(fitnessValues)
-
-    return evaluatedPopulation
 
 def getGeneration():
     return generation
 
-def bestFitnessIniPopulation():
-    return best_fitness_ini_population
 
-def getInitBranchCoverage():
-    return init_branch_coverage
+def getBestInitIndividual():
+    return init_best_individual
 
-def getEndBranchCoverage():
-    return end_branch_coverage
 
 def clearGeneration():
     global generation
-    global best_fitness_ini_population
-    global init_branch_coverage
-    global end_branch_coverage
-    best_fitness_ini_population = 0
-    init_branch_coverage = 0
-    end_branch_coverage = 0
+    global seedUsed
+    global init_best_individual
     generation = 0
+    seedUsed = 0
+    init_best_individual = []
+
+
+def getBestIndividual(evaluated_population):
+    best_individual_index = min(evaluated_population, key=evaluated_population.get)
+    fitness_best_individual = evaluated_population[best_individual_index]
+    return best_individual_index, fitness_best_individual
+
+def getSeedUsed():
+    return seedUsed
+
 
 def genetic_algorithm(seed=None):
     global generation
-    global init_branch_coverage
-    global end_branch_coverage
+    global seedUsed
+    global init_best_individual
+    seedUsed = seed
     population_size = 100
     tournament_size = 5
     p_crossover = 0.70
     p_mutation = 0.20
 
     # Generar y evaluar la poblacion inicial
-
-    population = create_population(population_size, seed)
-    evaluated_population = evaluateInitialGenerationPopulation(population)
+    if seed is not None:
+        random.seed(seed)
+    population = create_population(population_size)
+    evaluated_population = evaluate_population(population)
 
     # Imprimir el mejor valor de fitness encontrado
-    best_individual_index, fitness_best_individual = selection(evaluated_population, tournament_size)
+    best_individual_index, fitness_best_individual = getBestIndividual(evaluated_population)
     best_individual = population[best_individual_index]
-    init_branch_coverage = branchCoverageFor(best_individual)
-    # print("Best fitness value: " + str(fitness_best_individual))
+    init_best_individual = best_individual
 
     # Continuar mientras la cantidad de generaciones es menor que 1000
     # y no haya ningun individuo que cubra todos los objetivos
 
-    while generation < 1000 and not coveredAllBranches(best_individual):
+    while generation < 1000 and not coveredAllBranches(fitness_best_individual):
         # Producir una nueva poblacion en base a la anterior.
         # Usar selection, crossover y mutation.
-        new_population = generateMutations(generateCrossovers(population, p_crossover, seed), p_mutation, seed)
+        new_population = generateMutations(generateCrossovers(population, evaluated_population, p_crossover, population_size, tournament_size), p_mutation)
 
         # Una vez creada, reemplazar la poblacion anterior con la nueva
         generation += 1
@@ -122,10 +102,9 @@ def genetic_algorithm(seed=None):
 
         # Evaluar la nueva poblacion e imprimir el mejor valor de fitness
         evaluated_population = evaluate_population(population)
-        best_individual_index, fitness_best_individual = selection(evaluated_population, tournament_size)
+        best_individual_index, fitness_best_individual = getBestIndividual(evaluated_population)
         # print("New best fitness value: " + str(fitness_best_individual))
         best_individual = population[best_individual_index]
 
     # retornar el mejor individuo de la ultima generacion
-    end_branch_coverage = branchCoverageFor(best_individual)
     return best_individual

@@ -69,7 +69,7 @@ class TestEvaluateCondition(unittest.TestCase):
     def testGeLhsIsNotLarger(self):
         result = evaluate_condition(1, "Ge", 10, 20)
         self.assertFalse(result)
-        self.assertEqual(distances_true[1], 11)
+        self.assertEqual(distances_true[1], 10)
         self.assertEqual(distances_false[1], 0)
 
     def testGeSameValue(self):
