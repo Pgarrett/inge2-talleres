@@ -7,8 +7,6 @@ from src.selection import selection
 
 generation: int = 0
 seedUsed: int = 0
-init_best_individual = []
-
 
 def generateCrossovers(population, evaluated_population, p_crossover, population_size, tournament_size):
     crossovers = []
@@ -45,17 +43,11 @@ def getGeneration():
     return generation
 
 
-def getBestInitIndividual():
-    return init_best_individual
-
-
 def clearGeneration():
     global generation
     global seedUsed
-    global init_best_individual
     generation = 0
     seedUsed = 0
-    init_best_individual = []
 
 
 def getBestIndividual(evaluated_population):
@@ -70,7 +62,6 @@ def getSeedUsed():
 def genetic_algorithm(seed=None):
     global generation
     global seedUsed
-    global init_best_individual
     seedUsed = seed
     population_size = 100
     tournament_size = 5
@@ -85,8 +76,8 @@ def genetic_algorithm(seed=None):
 
     # Imprimir el mejor valor de fitness encontrado
     best_individual_index, fitness_best_individual = getBestIndividual(evaluated_population)
+    print("Best fitness value:" + str(fitness_best_individual))
     best_individual = population[best_individual_index]
-    init_best_individual = best_individual
 
     # Continuar mientras la cantidad de generaciones es menor que 1000
     # y no haya ningun individuo que cubra todos los objetivos
@@ -103,7 +94,7 @@ def genetic_algorithm(seed=None):
         # Evaluar la nueva poblacion e imprimir el mejor valor de fitness
         evaluated_population = evaluate_population(population)
         best_individual_index, fitness_best_individual = getBestIndividual(evaluated_population)
-        # print("New best fitness value: " + str(fitness_best_individual))
+        print("New best fitness value: " + str(fitness_best_individual))
         best_individual = population[best_individual_index]
 
     # retornar el mejor individuo de la ultima generacion
