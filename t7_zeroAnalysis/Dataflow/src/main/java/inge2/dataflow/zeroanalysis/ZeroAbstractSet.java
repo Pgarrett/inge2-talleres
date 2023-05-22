@@ -3,6 +3,7 @@ package inge2.dataflow.zeroanalysis;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * This class represents a mapping of ZeroAbstractValues (BOTTOM, NZ, Z or MZ) to variable names.
@@ -61,9 +62,12 @@ public class ZeroAbstractSet {
      * @return the union of this set with another set.
      */
     public ZeroAbstractSet union(ZeroAbstractSet another) {
+        /*
+         Implementamos la union buscando todas las claves y haciendo un merge de ambas llaves si es que
+         una key pertenece a los dos sets, caso contrario agregamos el valor del set al que pertenece la key.
+         */
         ZeroAbstractSet result = new ZeroAbstractSet();
-        Set<String> allKeys = this.map.keySet();
-        allKeys.addAll(another.map.keySet());
+        Set<String> allKeys = allKeys(another);
         for (String key : allKeys) {
             if (hasValue(key) && another.hasValue(key)) {
                 result.setValue(key, getValue(key).merge(another.getValue(key)));
@@ -72,6 +76,17 @@ public class ZeroAbstractSet {
             } else {
                 result.setValue(key, another.getValue(key));
             }
+        }
+        return result;
+    }
+
+    private Set<String> allKeys(ZeroAbstractSet set2) {
+        TreeSet<String> result = new TreeSet<>();
+        for (String key : getDefinedVariables()) {
+            result.add(key);
+        }
+        for (String key : set2.getDefinedVariables()) {
+            result.add(key);
         }
         return result;
     }

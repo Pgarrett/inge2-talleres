@@ -59,7 +59,14 @@ public class ZeroValueVisitor extends AbstractValueVisitor<ZeroAbstractValue> {
      */
     @Override
     public void visitDivExpression(ZeroAbstractValue leftOperand, ZeroAbstractValue rightOperand) {
+        /*
+         Asignamos el valor despues de la division.
+         A su vez, marcamos que dividir por ZERO o MAYBE_ZERO puede resultar en una division por cero.
+         */
         resolvedValue = leftOperand.divideBy(rightOperand);
+        if (rightOperand == ZeroAbstractValue.ZERO || rightOperand == ZeroAbstractValue.MAYBE_ZERO) {
+            possibleDivisionByZero = true;
+        }
     }
 
     /**
@@ -99,6 +106,9 @@ public class ZeroValueVisitor extends AbstractValueVisitor<ZeroAbstractValue> {
      */
     @Override
     public void visitIntegerConstant(int value) {
+        /*
+         Al ser una constante, el valor resuelto es deterministico.
+         */
         resolvedValue = value == 0 ? ZeroAbstractValue.ZERO : ZeroAbstractValue.NOT_ZERO;
     }
 

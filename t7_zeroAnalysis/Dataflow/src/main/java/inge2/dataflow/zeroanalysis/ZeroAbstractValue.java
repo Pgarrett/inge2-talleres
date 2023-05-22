@@ -45,6 +45,9 @@ public enum ZeroAbstractValue {
      * @return the result of the addition.
      */
     public ZeroAbstractValue add(ZeroAbstractValue another) {
+        /*
+        Transcripcion de la tabla de la primera parte para la suma
+         */
         if (this.equals(BOTTOM)) {
             return BOTTOM;
         } else if (this.equals(ZERO)) {
@@ -89,6 +92,9 @@ public enum ZeroAbstractValue {
      * @return the result of the division.
      */
     public ZeroAbstractValue divideBy(ZeroAbstractValue another) {
+        /*
+        Transcripcion de la tabla de la primera parte para la division
+         */
         if (this.equals(BOTTOM)) {
             return BOTTOM;
         } else if (this.equals(ZERO)) {
@@ -130,6 +136,9 @@ public enum ZeroAbstractValue {
      * @return the result of the multiplication.
      */
     public ZeroAbstractValue multiplyBy(ZeroAbstractValue another) {
+        /*
+        Transcripcion de la tabla de la primera parte para la multiplicacion
+         */
         if (this.equals(BOTTOM)) {
             return BOTTOM;
         } else if (this.equals(ZERO)) {
@@ -174,6 +183,9 @@ public enum ZeroAbstractValue {
      * @return the result of the subtraction.
      */
     public ZeroAbstractValue substract(ZeroAbstractValue another) {
+        /*
+        Transcripcion de la tabla de la primera parte para la resta
+         */
         if (this.equals(BOTTOM)) {
             return BOTTOM;
         } else if (this.equals(ZERO)) {
@@ -217,6 +229,9 @@ public enum ZeroAbstractValue {
      * @return the result of the merge.
      */
     public ZeroAbstractValue merge(ZeroAbstractValue another) {
+        /*
+        El camino hacia arriba en el reticulado
+         */
         if (this.equals(BOTTOM)) {
             switch (another) {
                 case BOTTOM:

@@ -34,6 +34,7 @@ public class inge2.dataflow.targets.ZeroAnalysis2 extends java.lang.Object
 
         j = m / x;
 /*7*/
+/*Possible division by zero here*/
 
         return j;
 /*8*/

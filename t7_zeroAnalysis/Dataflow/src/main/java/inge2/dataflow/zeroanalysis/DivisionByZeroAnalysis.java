@@ -72,8 +72,8 @@ public class DivisionByZeroAnalysis extends ForwardFlowAnalysis<Unit, ZeroAbstra
      */
     @Override
     protected void merge(ZeroAbstractSet input1, ZeroAbstractSet input2, ZeroAbstractSet output) {
-        // TODO: IMPLEMENTAR
-        throw new UnsupportedOperationException();
+        // Llamamos al putAll para modificar la referencia del mapa interno
+        output.putAll(input1.union(input2));
     }
 
     @Override
