@@ -45,10 +45,42 @@ public enum ZeroAbstractValue {
      * @return the result of the addition.
      */
     public ZeroAbstractValue add(ZeroAbstractValue another) {
-        if (this.name.equals("maybe-zero") && another.name.equals("zero")) {
-            return MAYBE_ZERO;
+        if (this.equals(BOTTOM)) {
+            return BOTTOM;
+        } else if (this.equals(ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                    return ZERO;
+                case NOT_ZERO:
+                    return NOT_ZERO;
+                default:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else if (this.equals(NOT_ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                case NOT_ZERO:
+                    return NOT_ZERO;
+                default:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                default:
+                case ZERO:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
         }
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -57,8 +89,39 @@ public enum ZeroAbstractValue {
      * @return the result of the division.
      */
     public ZeroAbstractValue divideBy(ZeroAbstractValue another) {
-        // TODO: IMPLEMENTAR
-        throw new UnsupportedOperationException();
+        if (this.equals(BOTTOM)) {
+            return BOTTOM;
+        } else if (this.equals(ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                case ZERO:
+                    return BOTTOM;
+                default:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return ZERO;
+            }
+        } else if (this.equals(NOT_ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                case ZERO:
+                    return BOTTOM;
+                default:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return NOT_ZERO;
+            }
+        } else {
+            switch (another) {
+                case BOTTOM:
+                case ZERO:
+                    return BOTTOM;
+                default:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        }
     }
 
     /**
@@ -67,8 +130,42 @@ public enum ZeroAbstractValue {
      * @return the result of the multiplication.
      */
     public ZeroAbstractValue multiplyBy(ZeroAbstractValue another) {
-        // TODO: IMPLEMENTAR
-        throw new UnsupportedOperationException();
+        if (this.equals(BOTTOM)) {
+            return BOTTOM;
+        } else if (this.equals(ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                default:
+                case ZERO:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return ZERO;
+            }
+        } else if (this.equals(NOT_ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                    return ZERO;
+                case NOT_ZERO:
+                    return NOT_ZERO;
+                default:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                    return ZERO;
+                default:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        }
     }
 
     /**
@@ -77,8 +174,41 @@ public enum ZeroAbstractValue {
      * @return the result of the subtraction.
      */
     public ZeroAbstractValue substract(ZeroAbstractValue another) {
-        // TODO: IMPLEMENTAR
-        throw new UnsupportedOperationException();
+        if (this.equals(BOTTOM)) {
+            return BOTTOM;
+        } else if (this.equals(ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                    return ZERO;
+                case NOT_ZERO:
+                    return NOT_ZERO;
+                default:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else if (this.equals(NOT_ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                default:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                default:
+                case ZERO:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        }
     }
 
     /**
@@ -87,8 +217,48 @@ public enum ZeroAbstractValue {
      * @return the result of the merge.
      */
     public ZeroAbstractValue merge(ZeroAbstractValue another) {
-        // TODO: IMPLEMENTAR
-        throw new UnsupportedOperationException();
+        if (this.equals(BOTTOM)) {
+            switch (another) {
+                case BOTTOM:
+                    return BOTTOM;
+                case ZERO:
+                    return ZERO;
+                case NOT_ZERO:
+                    return NOT_ZERO;
+                default:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else if (this.equals(ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                case ZERO:
+                    return ZERO;
+                default:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else if (this.equals(NOT_ZERO)) {
+            switch (another) {
+                case BOTTOM:
+                case NOT_ZERO:
+                    return NOT_ZERO;
+                default:
+                case ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        } else {
+            switch (another) {
+                default:
+                case BOTTOM:
+                case ZERO:
+                case NOT_ZERO:
+                case MAYBE_ZERO:
+                    return MAYBE_ZERO;
+            }
+        }
     }
 
 }

@@ -61,8 +61,19 @@ public class ZeroAbstractSet {
      * @return the union of this set with another set.
      */
     public ZeroAbstractSet union(ZeroAbstractSet another) {
-        // TODO: IMPLEMENTAR
-        throw new UnsupportedOperationException();
+        ZeroAbstractSet result = new ZeroAbstractSet();
+        Set<String> allKeys = this.map.keySet();
+        allKeys.addAll(another.map.keySet());
+        for (String key : allKeys) {
+            if (hasValue(key) && another.hasValue(key)) {
+                result.setValue(key, getValue(key).merge(another.getValue(key)));
+            } else if (hasValue(key)) {
+                result.setValue(key, getValue(key));
+            } else {
+                result.setValue(key, another.getValue(key));
+            }
+        }
+        return result;
     }
 
     /**
