@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="inge2.dataflow.TallerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-06-05T22:07:57" hostname="pgarret-ltmwawy.internal.salesforce.com" time="0.936">
+  <properties/>
+  <testcase name="testTarget1()" classname="inge2.dataflow.TallerTest" time="0.433"/>
+  <testcase name="testTarget2()" classname="inge2.dataflow.TallerTest" time="0.191"/>
+  <testcase name="testTarget3()" classname="inge2.dataflow.TallerTest" time="0.098"/>
+  <testcase name="testTarget4()" classname="inge2.dataflow.TallerTest" time="0.081"/>
+  <testcase name="testTarget5()" classname="inge2.dataflow.TallerTest" time="0.061"/>
+  <testcase name="testTarget6()" classname="inge2.dataflow.TallerTest" time="0.067"/>
+  <system-out><![CDATA[Soot started on Mon Jun 05 19:07:57 ART 2023
+Soot finished on Mon Jun 05 19:07:58 ART 2023
+Soot has run for 0 min. 0 sec.
+Soot started on Mon Jun 05 19:07:58 ART 2023
+Soot finished on Mon Jun 05 19:07:58 ART 2023
+Soot has run for 0 min. 0 sec.
+Soot started on Mon Jun 05 19:07:58 ART 2023
+Soot finished on Mon Jun 05 19:07:58 ART 2023
+Soot has run for 0 min. 0 sec.
+Soot started on Mon Jun 05 19:07:58 ART 2023
+Soot finished on Mon Jun 05 19:07:58 ART 2023
+Soot has run for 0 min. 0 sec.
+Soot started on Mon Jun 05 19:07:58 ART 2023
+Soot finished on Mon Jun 05 19:07:58 ART 2023
+Soot has run for 0 min. 0 sec.
+Soot started on Mon Jun 05 19:07:58 ART 2023
+Soot finished on Mon Jun 05 19:07:58 ART 2023
+Soot has run for 0 min. 0 sec.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
