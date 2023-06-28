@@ -19,14 +19,18 @@ public class StackAr {
     //@ spec_public
     private int top = -1;
 
+    //@ public invariant top < Integer.MAX_VALUE;
+
     //@ requires true;
     //@ ensures elems.length == 10;
+    //@ ensures top == -1;
     public StackAr() {
         this(DEFAULT_CAPACITY);
     }
 
     //@ requires 0 <= capacity < Integer.MAX_VALUE;
     //@ ensures elems.length == capacity;
+    //@ ensures top == -1;
     public StackAr(int capacity) {
         elems = new int[capacity];
     }
@@ -43,16 +47,17 @@ public class StackAr {
         return top == elems.length - 1;
     }
 
-    //@ requires top + 1 < Integer.MAX_VALUE;
+    //@ requires true;
     //@ ensures top < Integer.MAX_VALUE;
     //@ ensures \result == top + 1;
     public int size() {
         return top+1;
     }
 
-    //@ requires 0 <= top < elems.length - 1;
+    //@ requires -1 <= top < elems.length - 1;
     //@ ensures \forall int j; 0 <= j < top; elems[j] == \old(elems[j]);
     //@ ensures elems[top] == o;
+    //@ ensures top == \old(top) + 1;
     public void push(int o) {
         top++;
         elems[top] = o;
